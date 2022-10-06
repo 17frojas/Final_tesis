@@ -46,3 +46,37 @@ $pdf->SetAutoPageBreak(true,20);//salto de pagina automatico
 $pdf->SetFillColor(232,232,232);
 $pdf->SetFont('Arial','B',10);
 
+if($num==0){
+    $pdf->setXY(60,35);
+    $pdf->SetFont('Arial','B',15);
+    $pdf->Cell(100,8,'No hay Estudiantes Registrados',0,1,'C',0);
+}
+else {
+    $sql = "SELECT * FROM estudiantes";
+    $resultado = $mysqli->query($sql);
+    $pdf->SetX(2);
+    $pdf->Cell(20,6,utf8_decode('Código'),1,0,'C',1);
+    $pdf->Cell(60,6,'Nombres y Apellidos',1,0,'C',1);
+    $pdf->Cell(20,6,utf8_decode('Cédula'),1,0,'C',1);
+    $pdf->Cell(35,6,'Correo',1,0,'C',1);
+    $pdf->Cell(20,6,'Celular',1,0,'C',1);
+    $pdf->Cell(35,6,'Programa',1,0,'C',1);
+    $pdf->Cell(15,6,'Sede',1,1,'C',1);
+
+    $pdf->SetFont('Helvetica','',9);
+
+    /////////////////////
+    while($row = $resultado->fetch_assoc())
+        {
+            $pdf->Cell(20,6,utf8_decode($row['codigo']),1,0,'C');
+            $pdf->Cell(60,6,utf8_decode($row['nombres'].' '.$row['apellidos']),1,0,'C');
+            $pdf->Cell(20,6,utf8_decode($row['cedula']),1,0,'C');
+            $pdf->Cell(35,6,utf8_decode($row['correo']),1,0,'C');
+            $pdf->Cell(20,6,utf8_decode($row['celular']),1,0,'C');
+            $pdf->Cell(35,6,utf8_decode($row['programa']),1,0,'C');
+            $pdf->Cell(15,6,utf8_decode($row['sede']),1,1,'C');
+        }
+    ///////////////////
+}
+$pdf->Output();
+?>
